@@ -1,0 +1,23 @@
+name: ayatrace_source_corpus_v2_1
+version: "2.1.0"
+
+readers:
+  - type: jsonl
+    path: curatorkit_source_corpus.jsonl
+    format: pretrain
+    field_mapping:
+      text: output
+    source_uri: ayatrace://ayatrace/v2.1/source-corpus
+
+gates:
+  - type: schema
+    required_fields: [output]
+    min_tokens: 1
+    max_tokens: 100000
+
+# Preserve all adversarial spans, unicode/spacing variants, and clean/attack twins.
+normalizers: []
+generators: []
+
+exporters:
+  - type: corpus

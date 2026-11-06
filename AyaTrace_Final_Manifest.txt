@@ -1,0 +1,9 @@
+AyaTrace Final Research Pack v1.1
+Proofread and corrected 5 November 2026
+
+da1994f14c5d5fdd64a0fa0f5e86d5419d613248e6429988bf711237f6a21109  AyaTrace_Final_Execution_Plan.pdf  (165551 bytes)
+dfa7bac02ca55e7fc40389dfaeaf97739e3fd1fe3d8d97c68842adaacdfd5254  AyaTrace_Final_Execution_Plan.docx  (46935 bytes)
+d63619b4e6d687ebb7ac8a0c0e190ee14aa58a7de5cde32a86361b74e9212c08  AyaTrace_Final_Execution_Plan.md  (18225 bytes)
+36f8975a19e25bf4fd39fa1f02bc596291bf07252e5095ab72f6b338f1e77854  AyaTrace_Final_Execution_Notebook.ipynb  (76575 bytes)
+1c1770f983a5d8bdb7afe5f3e2941218c18158ed2405875d2ad094f390b1f2f7  AyaTrace_Dataset_Schema_v1.0.json  (9242 bytes)
+b28d9febb6c325c0eb24aa775b339b2ef988ab0b21e37b7a73561e3260b61b4e  AyaTrace_Final_README.md  (5683 bytes)

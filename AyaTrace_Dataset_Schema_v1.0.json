@@ -1,0 +1,401 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/ayatrace/episode.schema.v1.0.json",
+  "title": "AyaTrace Multi-Source Multi-Turn Episode Schema v1.0",
+  "description": "Canonical episode schema. attack_source records original provenance; event serialization_role/serialization_format record what the model sees. Each matched episode pair must have at least two assistant decision points after source exposure; this cross-record rule is enforced by the notebook validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "episode_id",
+    "pair_id",
+    "scenario_family_id",
+    "split_name",
+    "condition",
+    "attack_source",
+    "attack_present",
+    "attack_success",
+    "first_failure_turn",
+    "system_policy",
+    "user_objective",
+    "expected_safe_behavior",
+    "canary_id",
+    "events",
+    "metadata",
+    "attack_annotation",
+    "allowed_tool_actions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "episode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_family_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "All close paraphrases/variants from one scenario family must remain in one split."
+    },
+    "split_name": {
+      "enum": [
+        "pilot",
+        "discovery",
+        "held_out"
+      ]
+    },
+    "condition": {
+      "enum": [
+        "clean",
+        "corrupted"
+      ]
+    },
+    "attack_source": {
+      "enum": [
+        "retrieved_document",
+        "tool_output",
+        "memory"
+      ]
+    },
+    "attack_present": {
+      "type": "boolean",
+      "description": "Pre-run annotation; not inferred from model output."
+    },
+    "attack_success": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Post-run measured result; null before evaluation."
+    },
+    "first_failure_turn": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "system_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "user_objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_safe_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canary_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_tool_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "attack_annotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attack_family",
+        "instruction_intent",
+        "conflict_type",
+        "security_property",
+        "presentation"
+      ],
+      "properties": {
+        "attack_family": {
+          "type": "string"
+        },
+        "instruction_intent": {
+          "enum": [
+            "control_override",
+            "unauthorized_disclosure",
+            "unauthorized_action",
+            "task_diversion",
+            "other"
+          ]
+        },
+        "conflict_type": {
+          "enum": [
+            "none",
+            "policy_override",
+            "task_diversion",
+            "unauthorized_disclosure",
+            "unauthorized_action",
+            "integrity_violation"
+          ]
+        },
+        "security_property": {
+          "enum": [
+            "confidentiality",
+            "integrity",
+            "authorization",
+            "multiple"
+          ]
+        },
+        "presentation": {
+          "enum": [
+            "direct",
+            "quoted_or_embedded",
+            "gradual",
+            "role_imitating",
+            "structured_data",
+            "other"
+          ]
+        },
+        "reviewer_status": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "adjudicated"
+          ]
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "turn",
+          "event_type",
+          "content",
+          "trust_level",
+          "assistant_reply_after"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "turn": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "event_type": {
+            "enum": [
+              "user_message",
+              "assistant_seed",
+              "document_retrieval",
+              "tool_call",
+              "tool_result",
+              "memory_write",
+              "memory_retrieval"
+            ]
+          },
+          "content": {
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "retrieved_document",
+              "tool_output",
+              "memory",
+              null
+            ]
+          },
+          "source_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "trust_level": {
+            "enum": [
+              "trusted_policy",
+              "authorized_user",
+              "untrusted_external",
+              "application_generated"
+            ]
+          },
+          "serialization_role": {
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool",
+              "developer",
+              null
+            ]
+          },
+          "serialization_format": {
+            "enum": [
+              "native_chat_role",
+              "user_envelope_document",
+              "user_envelope_tool",
+              "user_envelope_memory",
+              "application_only",
+              "none",
+              null
+            ]
+          },
+          "origin_turn": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "retrieval_turn": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "tool_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tool_call_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "memory_record_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "assistant_reply_after": {
+            "type": "boolean"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "token_alignment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "tokenizer_revision",
+              "rendered_prompt_sha256",
+              "char_start",
+              "char_end",
+              "token_start",
+              "token_end"
+            ],
+            "properties": {
+              "tokenizer_revision": {
+                "type": "string"
+              },
+              "rendered_prompt_sha256": {
+                "type": "string"
+              },
+              "char_start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "char_end": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "token_start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "token_end": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "description": "Run-specific alignment metadata; only populate after verifying the serialized prompt and token IDs."
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "created_by",
+        "manual_review",
+        "runtime_canary_policy"
+      ],
+      "properties": {
+        "created_by": {
+          "type": "string"
+        },
+        "manual_review": {
+          "enum": [
+            "pending",
+            "reviewed",
+            "adjudicated"
+          ]
+        },
+        "runtime_canary_policy": {
+          "enum": [
+            "runtime_only",
+            "synthetic_placeholder_in_record"
+          ]
+        },
+        "source_license": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_citation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "condition": {
+            "const": "clean"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attack_present": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "condition": {
+            "const": "corrupted"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "attack_present": {
+            "const": true
+          }
+        }
+      }
+    }
+  ]
+}

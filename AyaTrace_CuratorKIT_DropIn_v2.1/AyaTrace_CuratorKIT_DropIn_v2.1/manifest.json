@@ -1,0 +1,37 @@
+{
+  "package": "AyaTrace CuratorKIT source-corpus ingest",
+  "dataset_version": "2.1.0",
+  "curatorkit_version_target": "0.1.22",
+  "input_file": "curatorkit_source_corpus.jsonl",
+  "record_count": 876,
+  "source_type_counts": {
+    "document": 236,
+    "memory": 188,
+    "tool": 292,
+    "direct_prompt": 160
+  },
+  "attack_condition_source_counts": {
+    "document": 118,
+    "memory": 94,
+    "tool": 146,
+    "direct_prompt": 80
+  },
+  "clean_condition_source_counts": {
+    "document": 118,
+    "memory": 94,
+    "tool": 146,
+    "direct_prompt": 80
+  },
+  "reader_format": "pretrain",
+  "field_mapping": {
+    "text": "output"
+  },
+  "exporter": "corpus",
+  "generators": [],
+  "normalizers": [],
+  "gates": [
+    "schema"
+  ],
+  "curatorkit_cli_run_status": "not_run_in_build_environment",
+  "purpose": "source-corpus ingestion only; multi-turn Tiny Aya runtime is separate"
+}
